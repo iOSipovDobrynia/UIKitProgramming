@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     // MARK: - Private prop
     private var segmentedControl = UISegmentedControl()
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     // MARK: - Actions
     @objc
-    private func segmetnedControlAction() {
+    private func segmentedControlAction() {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             mainLabel.text = "FIRST!!!"
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     
     @objc
     private func switchAction() {
-        datePicker.isHidden.toggle()
+        datePicker.isHidden = !switcher.isOn
     }
     
     @objc
@@ -123,7 +123,7 @@ private extension ViewController {
     func setupSwitchStackView() {
         switchStackView.axis = .horizontal
         switchStackView.distribution = .fill
-        stackView.spacing = 0
+        switchStackView.spacing = 0
         
         [
             switchLabel,
@@ -184,7 +184,7 @@ private extension ViewController {
     func addActions() {
         segmentedControl.addTarget(
             self,
-            action: #selector(segmetnedControlAction),
+            action: #selector(segmentedControlAction),
             for: .valueChanged
         )
         slider.addTarget(
@@ -244,7 +244,7 @@ private extension ViewController {
 }
 
 // MARK: - UIAlertController
-extension ViewController {
+private extension ViewController {
     private func showAlert(with title: String, and message: String) {
         let alert = UIAlertController(
             title: title,
