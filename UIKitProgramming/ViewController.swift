@@ -16,13 +16,60 @@ class ViewController: UIViewController {
     private let textField = UITextField()
     private let datePicker = UIDatePicker()
     private let switcher = UISwitch()
+    private let switchLabel = UILabel()
     private let doneButton = UIButton()
     
     private let stackView = UIStackView()
+    private let switchStackView = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+    
+    // MARK: - Actions
+    @objc
+    private func segmetnedControlAction() {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            mainLabel.text = "FIRST!!!"
+        case 1:
+            mainLabel.text = "Second"
+        default:
+            mainLabel.text = "Default Label"
+        }
+    }
+    
+    @objc
+    private func sliderAction() {
+        mainLabel.text = String(format: "%.2f", slider.value)
+    }
+    
+    @objc
+    private func doneButtonAction() {
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            showAlert(with: "Error", and: "Enter your age")
+            return
+        }
+        guard let age = Int(inputText) else {
+            showAlert(with: "Error", and: "Age must be integer")
+            return
+        }
+        
+        mainLabel.text = age.formatted()
+    }
+    
+    @objc
+    private func switchAction() {
+        datePicker.isHidden.toggle()
+    }
+    
+    @objc
+    private func datePickerAction() {
+        mainLabel.text = datePicker.date.formatted(
+            date: .omitted,
+            time: .complete
+        )
     }
 }
 
@@ -37,9 +84,11 @@ private extension ViewController {
         setupDatePicker()
         setupSwitch()
         setupDoneButton()
+        setupSwitchStackView()
         setupStackView()
         addSubViews()
         setupLayout()
+        addActions()
     }
 }
 
@@ -63,11 +112,24 @@ private extension ViewController {
             mainLabel,
             slider,
             textField,
-            datePicker,
-            switcher,
-            doneButton
+            doneButton,
+            switchStackView,
+            datePicker
         ].forEach { subView in
             stackView.addArrangedSubview(subView)
+        }
+    }
+    
+    func setupSwitchStackView() {
+        switchStackView.axis = .horizontal
+        switchStackView.distribution = .fill
+        stackView.spacing = 0
+        
+        [
+            switchLabel,
+            switcher
+        ].forEach { subView in
+            switchStackView.addArrangedSubview(subView)
         }
     }
     
@@ -103,17 +165,47 @@ private extension ViewController {
     }
     
     func setupDatePicker() {
-        
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .time
     }
     
     func setupSwitch() {
-        
+        switchLabel.text = "Show date picker"
+        switchLabel.font = UIFont.systemFont(ofSize: 20)
+        switcher.setOn(true, animated: false)
     }
     
     func setupDoneButton() {
         doneButton.setTitle("Done", for: .normal)
         doneButton.tintColor = .magenta
         doneButton.setTitleColor(.magenta, for: .normal)
+    }
+    
+    func addActions() {
+        segmentedControl.addTarget(
+            self,
+            action: #selector(segmetnedControlAction),
+            for: .valueChanged
+        )
+        slider.addTarget(
+            self,
+            action: #selector(sliderAction),
+            for: .valueChanged
+        )
+        doneButton.addTarget(
+            self,
+            action: #selector(doneButtonAction),
+            for: .touchUpInside
+        )
+        switcher.addTarget(
+            self,
+            action: #selector(switchAction),
+            for: .valueChanged
+        )
+        datePicker.addTarget(
+            self,
+            action: #selector(datePickerAction),
+            for: .valueChanged)
     }
 }
 
@@ -127,6 +219,7 @@ private extension ViewController {
             slider,
             textField,
             datePicker,
+            switchLabel,
             switcher,
             doneButton
         ].forEach { subView in
@@ -147,5 +240,22 @@ private extension ViewController {
                 constant: 16
             )
         ])
+    }
+}
+
+// MARK: - UIAlertController
+extension ViewController {
+    private func showAlert(with title: String, and message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(
+            title: "OK",
+            style: .default
+        ) { _ in self.textField.text = "" }
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
 }
