@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: - Private prop
     private var segmentedControl = UISegmentedControl()
     private let mainLabel = UILabel()
     private let slider = UISlider()
@@ -16,6 +17,8 @@ class ViewController: UIViewController {
     private let datePicker = UIDatePicker()
     private let switcher = UISwitch()
     private let doneButton = UIButton()
+    
+    private let stackView = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,7 @@ private extension ViewController {
         setupDatePicker()
         setupSwitch()
         setupDoneButton()
+        setupStackView()
         addSubViews()
         setupLayout()
     }
@@ -43,6 +47,18 @@ private extension ViewController {
 private extension ViewController {
     func addSubViews() {
         [
+            stackView
+        ].forEach { subView in
+            view.addSubview(subView)
+        }
+    }
+    
+    func setupStackView() {
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 50
+        
+        [
             segmentedControl,
             mainLabel,
             slider,
@@ -51,7 +67,7 @@ private extension ViewController {
             switcher,
             doneButton
         ].forEach { subView in
-            view.addSubview(subView)
+            stackView.addArrangedSubview(subView)
         }
     }
     
@@ -82,6 +98,8 @@ private extension ViewController {
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor.green.cgColor
         textField.layer.borderWidth = 1
+
+        textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
     func setupDatePicker() {
@@ -94,7 +112,7 @@ private extension ViewController {
     
     func setupDoneButton() {
         doneButton.setTitle("Done", for: .normal)
-//        doneButton.tintColor = .magenta
+        doneButton.tintColor = .magenta
         doneButton.setTitleColor(.magenta, for: .normal)
     }
 }
@@ -103,6 +121,7 @@ private extension ViewController {
 private extension ViewController {
     func setupLayout() {
         [
+            stackView,
             segmentedControl,
             mainLabel,
             slider,
@@ -115,87 +134,15 @@ private extension ViewController {
         }
         
         NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(
+            stackView.topAnchor.constraint(
                 equalTo: view.topAnchor,
                 constant: 60
             ),
-            segmentedControl.trailingAnchor.constraint(
+            stackView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor,
                 constant: -16
             ),
-            segmentedControl.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            mainLabel.topAnchor.constraint(
-                equalTo: segmentedControl.bottomAnchor,
-                constant: 30
-            ),
-            mainLabel.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            mainLabel.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            slider.topAnchor.constraint(
-                equalTo: mainLabel.bottomAnchor,
-                constant: 30
-            ),
-            slider.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            slider.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            textField.topAnchor.constraint(
-                equalTo: slider.bottomAnchor,
-                constant: 30
-            ),
-            textField.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            textField.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            datePicker.topAnchor.constraint(
-                equalTo: textField.bottomAnchor,
-                constant: 30
-            ),
-            datePicker.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            datePicker.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            switcher.topAnchor.constraint(
-                equalTo: datePicker.bottomAnchor,
-                constant: 30
-            ),
-            switcher.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            switcher.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            doneButton.topAnchor.constraint(
-                equalTo: switcher.bottomAnchor,
-                constant: 30
-            ),
-            doneButton.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
-            doneButton.leadingAnchor.constraint(
+            stackView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: 16
             )
