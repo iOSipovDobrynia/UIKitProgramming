@@ -31,6 +31,9 @@ private extension ViewController {
         setupMainLabel()
         setupSlider()
         setupTextField()
+        setupDatePicker()
+        setupSwitch()
+        setupDoneButton()
         addSubViews()
         setupLayout()
     }
@@ -79,6 +82,20 @@ private extension ViewController {
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor.green.cgColor
         textField.layer.borderWidth = 1
+    }
+    
+    func setupDatePicker() {
+        
+    }
+    
+    func setupSwitch() {
+        
+    }
+    
+    func setupDoneButton() {
+        doneButton.setTitle("Done", for: .normal)
+//        doneButton.tintColor = .magenta
+        doneButton.setTitleColor(.magenta, for: .normal)
     }
 }
 
@@ -143,6 +160,42 @@ private extension ViewController {
                 constant: -16
             ),
             textField.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            datePicker.topAnchor.constraint(
+                equalTo: textField.bottomAnchor,
+                constant: 30
+            ),
+            datePicker.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -16
+            ),
+            datePicker.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            switcher.topAnchor.constraint(
+                equalTo: datePicker.bottomAnchor,
+                constant: 30
+            ),
+            switcher.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -16
+            ),
+            switcher.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            doneButton.topAnchor.constraint(
+                equalTo: switcher.bottomAnchor,
+                constant: 30
+            ),
+            doneButton.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -16
+            ),
+            doneButton.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: 16
             )
